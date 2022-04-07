@@ -3,6 +3,7 @@ package net.mcmillan.cryptography;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.Base64.Decoder;
 import java.util.Base64.Encoder;
 import java.util.Random;
@@ -18,8 +19,8 @@ public class Test {
 	public static JeffBase64 jb64 = new JeffBase64();
 	
 	public static void main(String args[]) {
-		test(new byte[] {0x4d, 0x61, 0x6e});
-//		megaTest(100,64);
+//		test(new byte[] {0x4d, 0x61, 0x6e});
+		megaTest(100,64);
 	}
 	
 	private static void megaTest(int iters, int maxLength) {
@@ -34,20 +35,18 @@ public class Test {
 	}
 
 	private static void test(byte[] data) {
-//		for (byte b : data) System.out.println(b);
 		String encMy = jb64.encrypt(data);
 		String encLib = encb64(data);
 		
 		if (!encMy.equals(encLib)) {
-			System.out.println(encMy);
-			System.out.println(encLib);
+			throw new IllegalStateException("Enc str not equal");
 		}
+		
 		byte[] decMy = jb64.decrypt(encMy);
 		byte[] decLib = decb64(encMy);
 
-		if (!decMy.equals(decLib)) {
-			System.err.println("Byte[] not equal");
-			assert false;
+		if (!Arrays.equals(decMy, decLib)) {
+			throw new IllegalStateException("Byte[] not equal");
 		}
 	}
 	
