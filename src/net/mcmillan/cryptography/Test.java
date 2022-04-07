@@ -35,14 +35,14 @@ public class Test {
 	}
 
 	private static void test(byte[] data) {
-		String encMy = jb64.encrypt(data);
+		String encMy = jb64.encode(data);
 		String encLib = encb64(data);
 		
 		if (!encMy.equals(encLib)) {
 			throw new IllegalStateException("Enc str not equal");
 		}
 		
-		byte[] decMy = jb64.decrypt(encMy);
+		byte[] decMy = jb64.decode(encMy);
 		byte[] decLib = decb64(encMy);
 
 		if (!Arrays.equals(decMy, decLib)) {
